@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Report</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  </head>
+  <body>
+    <h1>Sales Report</h1>
+    <button id="getReportButton" style="margin-bottom: 20px">Get Report</button>
+
+    <table id="salesTable" class="display" style="width: 100%">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Grand Total</th>
+          <th>Profit Total</th>
+          <th>Tip Total</th>
+          <th>Cashier</th>
+          <th>Created At</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      $(document).ready(function () {
+        // Initialize DataTable
+        const table = $("#salesTable").DataTable();
+
+        // Button click event to fetch data and populate the table
+        $("#getReportButton").on("click", function () {
+          // Fetch data from the backend API
+          $.ajax({
+            url: "http://localhost:3000/api/sales-data",
+            method: "GET",
+            success: function (data) {
+              // Clear previous data
+              table.clear();
+
+              // Add new data to the table
+              table.rows.add(data).draw();
+            },
+            error: function (err) {
+              console.error("Error fetching data:", err);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
